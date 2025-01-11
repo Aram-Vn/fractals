@@ -1,11 +1,6 @@
-#ifndef FRACTAL_WINDOW_H
-#define FRACTAL_WINDOW_H
-
-#include <SFML/Graphics.hpp>
-
-#include <complex>
-
 #include "MandelbrotFractal.h"
+#include <SFML/Graphics.hpp>
+#include <complex>
 
 class FractalWindow
 {
@@ -17,6 +12,7 @@ private:
     void handleEvents();
     void update();
     void render();
+    void debounceUpdate();
 
     int                  m_width, m_height;
     int                  m_max_iterations;
@@ -29,6 +25,9 @@ private:
     sf::Sprite       m_sprite;
 
     my::MandelbrotFractal m_fractal;
-};
 
-#endif
+    // Time tracking for debouncing
+    sf::Clock      m_clock;
+    sf::Time       m_lastInputTime;
+    const sf::Time m_debounceTime; // 200ms delay
+};
