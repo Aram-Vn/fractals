@@ -1,6 +1,6 @@
 
-#ifndef __FRACTALS_INCLUDE_FRACTALS_H__
-#define __FRACTALS_INCLUDE_FRACTALS_H__
+#ifndef __FRACTALS_INCLUDE_MANDELBROT_FRACTAL_H__
+#define __FRACTALS_INCLUDE_MANDELBROT_FRACTAL_H__
 
 #include <SFML/Graphics.hpp>
 #include <complex>
@@ -14,8 +14,10 @@ namespace my {
         MandelbrotFractal(int width, int height, double zoom, std::complex<double> center, int max_iterations);
 
     public:
-        void      generateFractal(sf::Image& image);
-        sf::Color getColor(int iterations) const;
+        void      generateFractal(sf::Image& image, bool colorful);
+        sf::Color getColor(int iterations, bool colorful) const;
+        sf::Color getColor_black_blue(int iterations) const;
+        sf::Color getColor_colorful(int iterations) const;
         int       mandelbrot(const std::complex<double>& c) const;
 
         inline double getZoom() const
@@ -38,14 +40,15 @@ namespace my {
         }
 
     private:
-        void generateFractalSection(sf::Image& image, int startRow, int endRow) const;
+        void generateFractalSection(sf::Image& image, int startRow, int endRow, bool colorful) const;
 
     private:
-        int                  m_width, m_height;
+        int                  m_width;
+        int                  m_height;
         double               m_zoom;
         std::complex<double> m_center;
         int                  m_max_iterations;
     };
 } // namespace my
 
-#endif // __FRACTALS_INCLUDE_FRACTALS_H__
+#endif // __FRACTALS_INCLUDE_MANDELBROT_FRACTAL_H__

@@ -1,3 +1,7 @@
+#ifndef __FRACTALS_INCLUDE_FRACTAL_WINDOW_H__
+#define __FRACTALS_INCLUDE_FRACTAL_WINDOW_H__
+
+#include "Button.h"
 #include "MandelbrotFractal.h"
 #include <SFML/Graphics.hpp>
 #include <complex>
@@ -29,5 +33,11 @@ private:
     // Time tracking for debouncing
     sf::Clock      m_clock;
     sf::Time       m_lastInputTime;
-    const sf::Time m_debounceTime; // 200ms delay
+    const sf::Time m_debounceTime;
+
+    Button m_button1;
+    Button m_button2;
+    bool   m_useColorful;
 };
+
+#endif // __FRACTALS_INCLUDE_FRACTAL_WINDOW_H__
