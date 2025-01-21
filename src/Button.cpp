@@ -6,14 +6,14 @@ Button::Button(const sf::Vector2f& position, const sf::Vector2f& size, const std
     m_buttonShape.setSize(size);
     m_buttonShape.setFillColor(sf::Color::Blue);
 
-    if (!m_font.loadFromFile("path/to/font.ttf"))
+    if (!m_font.loadFromFile("../assets/HackNerdFontPropo-Italic.ttf"))
     {
         // Handle error
     }
 
     m_buttonText.setFont(m_font);
     m_buttonText.setString(text);
-    m_buttonText.setCharacterSize(24);
+    m_buttonText.setCharacterSize(19);
     m_buttonText.setFillColor(sf::Color::White);
     m_buttonText.setPosition(position.x + (size.x - m_buttonText.getLocalBounds().width) / 2,
                              position.y + (size.y - m_buttonText.getLocalBounds().height) / 2);

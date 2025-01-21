@@ -12,7 +12,7 @@ FractalWindow::FractalWindow(int width, int height, int max_iterations)
       m_debounceTime(sf::seconds(0.9)),
       m_button1(sf::Vector2f(10, 10), sf::Vector2f(100, 50), "Standard"),
       m_button2(sf::Vector2f(120, 10), sf::Vector2f(100, 50), "Colorful"),
-      m_useColorful(false)
+      m_useColorful(true)
 {
     m_image.create(m_width, m_height, sf::Color::Black);
     m_fractal.generateFractal(m_image, m_useColorful);
@@ -38,11 +38,11 @@ void FractalWindow::handleEvents()
         else if (event.type == sf::Event::MouseButtonPressed)
         {
             sf::Vector2f mousePosition(event.mouseButton.x, event.mouseButton.y);
-            if (m_button1.isClicked(mousePosition))
+            if (m_button2.isClicked(mousePosition))
             {
                 m_useColorful = false;
             }
-            else if (m_button2.isClicked(mousePosition))
+            else if (m_button1.isClicked(mousePosition))
             {
                 m_useColorful = true;
             }

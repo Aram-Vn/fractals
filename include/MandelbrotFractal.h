@@ -20,10 +20,16 @@ namespace my {
         sf::Color getColor_colorful(int iterations) const;
         int       mandelbrot(const std::complex<double>& c) const;
 
+        void setColorFunction(sf::Color (MandelbrotFractal::*colorFunc)(int) const)
+        {
+            m_colorFunc = colorFunc;
+        }
+
         inline double getZoom() const
         {
             return m_zoom;
         }
+
         inline void setZoom(double zoom)
         {
             m_zoom = zoom;
@@ -48,6 +54,7 @@ namespace my {
         double               m_zoom;
         std::complex<double> m_center;
         int                  m_max_iterations;
+        sf::Color (MandelbrotFractal::*m_colorFunc)(int) const = &MandelbrotFractal::getColor_black_blue;
     };
 } // namespace my
 
