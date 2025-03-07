@@ -1,61 +1,38 @@
-
 cmake_minimum_required(VERSION 3.10)
 
 project("fractals")
 
 set(TARGET_NAME app_${PROJECT_NAME})
-set(CMAKE_EXPORT_COMPILE_COMMANDS on)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+include(${CMAKE_SOURCE_DIR}/cmake/SetupSFML.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/CustomCommands.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/CompilerOptions.cmake)
 
-file(GLOB_RECURSE SOURCE_FILES 
+set(SFML_STATIC_LIBRARIES OFF)
+set(SFML_DIR ${CMAKE_SOURCE_DIR}/external/SFML)
+
+
+file(GLOB_RECURSE SOURCE_FILES
     src/*.cpp
 )
 
-file(GLOB_RECURSE HEADER_FILES 
+file(GLOB_RECURSE HEADER_FILES
     include/*.h
 )
 
-add_executable(${TARGET_NAME} 
-    main.cpp  
-    ${SOURCE_FILES} 
+add_executable(${TARGET_NAME}
+    main.cpp
+    ${SOURCE_FILES}
     ${HEADER_FILES}
 )
 
 target_include_directories(${TARGET_NAME}
-    PRIVATE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-set(COMMON_COMPILE_OPTIONS
-    -Wall
-    -Wextra
-    -Wshadow
-    -Wswitch
-    -pedantic
-    -Wformat=2
-    -Wnull-dereference
-    -Wunused-parameter
-    -Wunreachable-code
-    -Wimplicit-fallthrough
-)
-
-set(COMMON_ERROR_OPTIONS
-    -Werror
-    -Werror=return-type
-    -Werror=uninitialized
-    -Werror=unused-result
-    -Werror=strict-overflow
-)
-
-set(SANITIZER_FLAGS
-    -fsanitize=undefined
-    -fsanitize=address
-    # -fsanitize=thread 
-    -fsanitize=address
-    -fno-omit-frame-pointer
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${SFML_DIR}/include
 )
 
 target_compile_options(${TARGET_NAME} PRIVATE
@@ -63,30 +40,8 @@ target_compile_options(${TARGET_NAME} PRIVATE
     ${COMMON_ERROR_OPTIONS}
 )
 
+# Link SFML libraries
 target_link_libraries(${TARGET_NAME} PRIVATE
-    ${SANITIZER_FLAGS} sfml-graphics sfml-window sfml-system
+    ${SANITIZER_FLAGS}
+    sfml-graphics sfml-window sfml-system
 )
-
-#-----------------------------------------------------------------------#
-# if need to remove flags set lib as SYSTEM 
-# to suppress warnings in external headers
-#-----------------------------------------------------------------------#
-# Remove -pedantic from the target’s options 
-# get_target_property(target_options ${TARGET_NAME} COMPILE_OPTIONS)
-# list(REMOVE_ITEM target_options "-pedantic")
-# set_property(TARGET ${TARGET_NAME} PROPERTY COMPILE_OPTIONS ${target_options})
-
-# If not Visual Studio generator, copy compile_commands.json
-if(NOT CMAKE_GENERATOR MATCHES "Visual Studio")
-    add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
-        DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
-        COMMENT "Copying compile_commands.json..."
-    )
-
-    add_custom_target(copy_compile_commands ALL
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
-    )
-endif()
-        
