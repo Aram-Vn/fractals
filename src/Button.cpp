@@ -8,7 +8,7 @@ Button::Button(const sf::Vector2f& position, const sf::Vector2f& size, const std
 
     if (!m_font.loadFromFile("../assets/HackNerdFontPropo-Italic.ttf"))
     {
-        // Handle error
+        // Handle error ???
     }
 
     m_buttonText.setFont(m_font);

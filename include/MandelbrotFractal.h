@@ -7,6 +7,8 @@
 #include <thread>
 #include <vector>
 
+#include "ThreadPool.h"
+
 namespace my {
     class MandelbrotFractal
     {
@@ -55,6 +57,8 @@ namespace my {
         std::complex<double> m_center;
         int                  m_max_iterations;
         sf::Color (MandelbrotFractal::*m_colorFunc)(int) const = &MandelbrotFractal::getColor_black_blue;
+
+        ThreadPool m_threadPool;
     };
 } // namespace my
 

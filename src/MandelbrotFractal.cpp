@@ -8,27 +8,21 @@ namespace my {
           m_height(height),
           m_zoom(zoom),
           m_center(center),
-          m_max_iterations(max_iterations)
+          m_max_iterations(max_iterations),
+          m_threadPool(std::thread::hardware_concurrency())
     {
     }
 
     void MandelbrotFractal::generateFractal(sf::Image& image, bool colorful)
     {
-        int                      numThreads = std::thread::hardware_concurrency();
-        std::vector<std::thread> threads;
-        int                      rowsPerThread = m_height / numThreads;
+        int numThreads  = m_threadPool.getNumThreads();
+        int rowsPerTask = std::max(1, m_height / numThreads);
 
-        for (int i = 0; i < numThreads; ++i)
+        for (int startRow = 0; startRow < m_height; startRow += rowsPerTask)
         {
-            int startRow = i * rowsPerThread;
-            int endRow   = (i == numThreads - 1) ? m_height : startRow + rowsPerThread;
-            threads.emplace_back(&MandelbrotFractal::generateFractalSection, this, std::ref(image), startRow, endRow,
-                                 colorful);
-        }
-
-        for (auto& t : threads)
-        {
-            t.join();
+            int endRow = std::min(startRow + rowsPerTask, m_height);
+            m_threadPool.enqueue([this, &image, startRow, endRow, colorful]
+                                 { generateFractalSection(image, startRow, endRow, colorful); });
         }
     }
 
