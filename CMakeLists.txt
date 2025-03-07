@@ -11,10 +11,6 @@ include(${CMAKE_SOURCE_DIR}/cmake/SetupSFML.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/CustomCommands.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/CompilerOptions.cmake)
 
-set(SFML_STATIC_LIBRARIES OFF)
-set(SFML_DIR ${CMAKE_SOURCE_DIR}/external/SFML)
-
-
 file(GLOB_RECURSE SOURCE_FILES
     src/*.cpp
 )

@@ -24,3 +24,17 @@ endif()
 
 # Add SFML as a subdirectory
 add_subdirectory(${CMAKE_SOURCE_DIR}/external/SFML)
+
+find_library(SFML_GRAPHICS_LIBRARY NAMES sfml-graphics PATHS ${CMAKE_SOURCE_DIR}/external/SFML/lib)
+find_library(SFML_WINDOW_LIBRARY NAMES sfml-window PATHS ${CMAKE_SOURCE_DIR}/external/SFML/lib)
+find_library(SFML_SYSTEM_LIBRARY NAMES sfml-system PATHS ${CMAKE_SOURCE_DIR}/external/SFML/lib)
+
+if(SFML_GRAPHICS_LIBRARY AND SFML_WINDOW_LIBRARY AND SFML_SYSTEM_LIBRARY)
+    message(STATUS "[ V ] SFML shared libraries found, using dynamic linking.")
+    set(SFML_STATIC_LIBRARIES OFF)
+else()
+    message(WARNING "[ X ] SFML shared libraries NOT found, switching to static linking.")
+    set(SFML_STATIC_LIBRARIES ON)
+endif()
+
+set(SFML_DIR ${CMAKE_SOURCE_DIR}/external/SFML)
